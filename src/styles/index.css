@@ -1,0 +1,100 @@
+body {
+  font-family: 'Roboto Slab', sans-serif !important;
+  background-color: antiquewhite;
+  /*background-image: url("https://www.transparenttextures.com/patterns/gplay.png");*/
+  background-image: url("https://www.transparenttextures.com/patterns/food.png");
+  -webkit-font-smoothing: antialiased;
+  color: rgba(131, 177, 195, 0.87);
+}
+
+.container {
+  height: 100vh;
+}
+
+.playAs {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.container * {
+  color: rgba(165, 73, 20, 0.88);
+}
+
+.mainButton {
+  background-color: #3172ee;
+  position: absolute;
+  color: white;
+  padding: 0.5em;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  padding: 8px 16px;
+  margin: 8px;
+  cursor: pointer;
+}
+
+.movable {
+  cursor: move !important;
+}
+
+.playAs {
+  text-align: center;
+}
+
+.playAsTitle {
+  margin-bottom: 0;
+}
+
+.player {
+  cursor: pointer;
+}
+
+.playerImgWrapper {
+  margin: auto;
+  border-radius: 2px;
+  transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+}
+
+.playerImgWrapper.selectable {
+  box-shadow: 2px 2px 6px 1px #929292;
+  background: rgba(255, 255, 255, 1);
+  max-width: 250px;
+}
+
+.playerImg.selectable {
+  max-height: 120px;
+  max-width: none;
+  margin: 2em;
+}
+
+.playerImg {
+  max-width: 40px;
+}
+
+.playerLabel {
+  padding: 1em;
+  margin: 0;
+  font-style: italic;
+}
+
+@media only screen and (max-width: 730px) {
+  .player:nth-child(2) {
+    border-top: 1px solid;
+    margin-top: 2em;
+  }
+}
+
+@media only screen and (min-width: 731px) {
+  .player:nth-child(2) {
+    border-left: 1px solid;
+  }
+}
+
+.connectedLabel {
+  -webkit-text-stroke-color: #3cb33b;
+  -webkit-text-stroke-width: thin;
+  font-weight: 900;
+  margin-left: 1em;
+}
