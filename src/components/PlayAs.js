@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import DevilIcon from '../styles/devil.svg'
-import ClickIcon from '../styles/click.svg'
+import DevilIcon from '../images/devil.svg'
+import ClickIcon from '../images/click.svg'
 
 function getPlayerLabel(player, playingAs) {
   if (playingAs) {
