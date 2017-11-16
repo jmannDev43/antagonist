@@ -5,6 +5,7 @@ body {
   background-image: url("https://www.transparenttextures.com/patterns/food.png");
   -webkit-font-smoothing: antialiased;
   color: rgba(131, 177, 195, 0.87);
+  overflow: hidden;
 }
 
 .container {
@@ -130,7 +131,25 @@ body {
 
 .gameResult {
   max-width: 100%;
+  max-height: 205px;
   border-radius: 2px;
-  box-shadow: 1px 2px 3px #eee;
   margin-bottom: 2em;
+}
+
+.gameResult.lost {
+  box-shadow: 1px 2px 3px #eee;
+}
+
+.countDownWrapper {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+
+.countDown {
+  margin: 0;
+}
+
+.dialogDesc {
+  -webkit-text-stroke-width: thin;
 }
