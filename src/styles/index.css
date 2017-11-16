@@ -22,7 +22,7 @@ body {
   color: rgba(165, 73, 20, 0.88);
 }
 
-.mainButton {
+.mainButton, .mainButtonCopy {
   background-color: #3172ee;
   position: absolute;
   color: white;
@@ -114,6 +114,7 @@ body {
 #catVideo {
   position: absolute;
   left: 0;
+  top: 0;
 }
 
 .antagonistButton {
@@ -197,3 +198,52 @@ circle {
     transform: scale(2);
   }
 }
+
+.fullSize {
+  height: 100vh;
+  width: 100vw;
+}
+
+.atTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.ad {
+  max-width: 200px;
+  z-index: 99999;
+  cursor: pointer;
+  position: relative;
+  animation-duration: 1.3s;
+  animation-name: ad;
+  animation-iteration-count: infinite;
+}
+
+@keyframes ad {
+  0% {
+    transform: translateX(10px);
+    transform: translateY(-10px);
+    transform: scale(0.8);
+  }
+  50% {
+    transform: translateX(-40px);
+    transform: translateY(30px);
+    transform: scale(1.5);
+  }
+  100% {
+    transform: translateX(10px);
+    transform: translateY(-10px);
+    transform: scale(0.8);
+  }
+}
+
+.BSOD {
+  background-color: blue;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/*.ieError {*/
+  /*max-width: window;*/
+/*}*/

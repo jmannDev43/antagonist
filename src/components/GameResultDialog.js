@@ -17,12 +17,13 @@ const GameResultDialog = (props) => {
       label="Play Again"
       primary={false}
       onClick={() => props.updateGameState({ key: 'winner', data: '', isSender: true })}
+      style={{ marginRight: '1em' }}
     />,
     <RaisedButton
       label="Choose Player"
       primary={false}
       onClick={() => props.resetGame(true)}
-      style={{ marginLeft: '1em' }}
+      style={{ marginRight: '1em' }}
     />
   ];
   return <Dialog

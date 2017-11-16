@@ -25,7 +25,7 @@ class ClickerView extends Component {
       <div
         className="mainButton"
         style={buttonStyle}
-        onClick={() => {console.log(`mainButton`); this.props.updateGameState({ key: 'winner', data: 'clicker', isSender: true }); }}
+        onClick={() => {this.props.updateGameState({ key: 'winner', data: 'clicker', isSender: true }); }}
       >Click me!!!</div>
       <GameResultDialog {...this.props} playerView="clicker"/>
     </div>
