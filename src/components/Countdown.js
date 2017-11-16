@@ -27,7 +27,6 @@ class Countdown extends Component {
   }
   stopCountDown() {
     clearInterval(intervalId);
-    this.props.updateGameState({ key: 'winner', data: 'antagonist', isSender: true });
     this.setState({ secondsRemaining: 30 });
   }
   runCountDown() {
@@ -36,6 +35,7 @@ class Countdown extends Component {
       this.setState({ secondsRemaining })
       if (secondsRemaining === 0) {
         this.stopCountDown();
+        this.props.updateGameState({ key: 'winner', data: 'antagonist', isSender: true });
       }
     }, 1000);
   }

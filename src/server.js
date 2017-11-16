@@ -13,10 +13,13 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected', new Date().toLocaleDateString());
   });
-  socket.on('update game option event', (payload) => {
+  socket.on('update game option event', payload => {
     socket.broadcast.emit('new gameState', payload);
   });
-  socket.on('playAs event', (payload) => {
+  socket.on('playAs event', payload => {
     socket.broadcast.emit('new player selected', payload);
+  });
+  socket.on('reset game event', () => {
+    socket.broadcast.emit('reset game');
   });
 })
