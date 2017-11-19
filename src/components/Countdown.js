@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 function pad(number) {
+  if (number === 60) {
+    return '00';
+  }
   return number < 10 ? `0${number}` : number.toString();
 }
 
@@ -10,7 +13,8 @@ class Countdown extends Component {
   constructor() {
     super()
     this.state = {
-      secondsRemaining: 30
+      minutes: 2,
+      seconds: 60
     }
   }
   componentDidMount() {
@@ -27,13 +31,23 @@ class Countdown extends Component {
   }
   stopCountDown() {
     clearInterval(intervalId);
-    this.setState({ secondsRemaining: 30 });
+    this.setState({ seconds: 60, minutes: 2 });
   }
   runCountDown() {
     intervalId = setInterval(() => {
-      const secondsRemaining = this.state.secondsRemaining - 1;
-      this.setState({ secondsRemaining })
-      if (secondsRemaining === 0) {
+      let minutes = this.state.minutes;
+      let seconds = this.state.seconds;
+      if (seconds === 60 && minutes > 0) {
+        minutes -= 1;
+        seconds -= 1;
+      } else if (seconds === 0) {
+        seconds = 59;
+        minutes = minutes && minutes - 1;
+      } else {
+        seconds -= 1;
+      }
+      this.setState({ seconds, minutes })
+      if (seconds === 0 && minutes === 0) {
         this.stopCountDown();
         this.props.updateGameState({ key: 'winner', data: 'antagonist', isSender: true });
       }
@@ -43,7 +57,7 @@ class Countdown extends Component {
     return (
       <div className="countDownWrapper">
         <h1 className="countDown">
-          00:{pad(this.state.secondsRemaining)}
+          0{this.state.minutes}:{pad(this.state.seconds)}
         </h1>
       </div>
     )

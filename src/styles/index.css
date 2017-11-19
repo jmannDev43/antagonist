@@ -1,3 +1,7 @@
+html {
+  overflow: hidden;
+}
+
 body {
   font-family: 'Roboto Slab', sans-serif !important;
   background-color: antiquewhite;
@@ -31,8 +35,8 @@ body {
   border-radius: 2px;
   text-transform: uppercase;
   font-size: 0.875rem;
-  padding: 8px 16px;
-  margin: 8px;
+  padding: 6px 14px;
+  margin: 5px;
   cursor: pointer;
   -webkit-text-stroke-width: medium;
   -webkit-font-smoothing: antialiased;
@@ -48,67 +52,157 @@ body {
 
 .playAsTitle {
   margin-bottom: 0;
+  position: absolute;
+  top: 0;
+  transform: translateY(-90px);
+  width: 100%;
+  -webkit-text-stroke-width: thin;
 }
 
 .player {
+  margin: 3em 0 3em 0;
+}
+
+.player .playerImgWrapper.selectionComplete {
+  animation: comeInTop;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+}
+
+.player.selectable {
+  margin: 0;
   cursor: pointer;
+  animation: comeInLeft;
+  animation-duration: 1.5s;
+  transition: all 500ms cubic-bezier(0.420, 0.000, 0.580, 1.000);
+}
+
+.connected {
+  background: #4db741 !important;
+}
+
+.waiting {
+  background: #8a8988 !important;
+}
+
+.mainButton.shrink {
+  animation: shrink;
+  animation-duration: 1s;
+  transform: scale(0.2);
+}
+
+@keyframes shrink {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.2);
+  }
+}
+
+@keyframes comeInLeft {
+ 0% {
+   left: -2000px;
+   border-color: transparent;
+ }
+  50% {
+    left: 15%;
+    border-color: transparent;
+  }
+  75% {
+    border-color: rgba(0, 0, 0, 0.25);
+  }
+  100% {
+    left: 0%;
+    border-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes comeInTop {
+  0% {
+    transform: translateY(500px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+
+.player.selectable .playerImgWrapper {
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  background: rgba(255, 183, 52, 0.85);
+  max-width: 135px;
 }
 
 .playerImgWrapper {
   margin: auto;
   border-radius: 2px;
-  transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  background: #4c4c4c;
+  transition: all 500ms cubic-bezier(0.420, 0.000, 0.580, 1.000);
 }
 
-.playerImgWrapper.selectable {
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
-  background: rgba(255, 255, 255, 1);
-  max-width: 250px;
-}
-
-.playerImg.selectable {
-  max-height: 120px;
+.player.selectable .playerImg {
+  max-height: 75px;
   max-width: none;
-  margin: 2em;
+  margin: 1em;
 }
 
 .playerImg {
   max-width: 40px;
 }
 
-.playerLabel {
+.playerTitle {
+  display: none;
+  margin-bottom: 0px;
+  background: #4c4c4c;
+  padding: 0.25em;
+  border-radius: 2px 2px 0 0;
+  border-bottom: 1px solid #ffffff;
+  color: white;
+  margin-top: 40px;
+}
+
+.player.selectable .playerTitle, .player.selectable .playerDesc {
+  display: block;
+}
+
+.playerDesc {
+  display: none;
   padding: 1em;
   margin: 0;
   font-style: italic;
+  color: #696969;
 }
 
 @media only screen and (max-width: 730px) {
-  .player:nth-child(2) {
-    border-top: 1px solid;
+  .player.selectable:nth-child(2) {
+    border-top: 1px solid #696969;
     margin-top: 2em;
   }
 }
 
 @media only screen and (min-width: 731px) {
-  .player:nth-child(2) {
-    border-left: 1px solid;
+  .player.selectable:nth-child(2) {
+    border-left: 1px solid #696969;
   }
 }
 
 .connectedLabel {
-  -webkit-text-stroke-color: #3cb33b;
+  -webkit-text-stroke-color: white;
   -webkit-text-stroke-width: thin;
   font-weight: 900;
   margin-left: 1em;
 }
 
 .toolbar {
-  width: 100px;
+  width: 100%;
   position: absolute;
   right: 0px;
-  top: 5px;
-  height: 100vh;
-  z-index: 99999999;
+  bottom: 50px;
+  /*height: 100vh;*/
+  z-index: 99;
 }
 
 #catVideo {
@@ -124,6 +218,9 @@ body {
   border-radius: 2px;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
   cursor: pointer;
+  width: 50%;
+  display: inline-block;
+  text-align: center;
 }
 
 .antagonistButton.active {
@@ -168,17 +265,18 @@ body {
 .clickIndicator {
   position: absolute;
   display: none;
+  z-index: 99999;
 }
 
 /* Credit to https://codepen.io/riccardoscalco/pen/GZzZRz */
 circle {
-  stroke: #ff7b4a;
-  stroke-width: 2px;
+  stroke: #ff313e;
+  stroke-width: 4px;
   stroke-opacity: 1;
 }
 
 .pulse {
-  fill: white;
+  fill: #771b1b;
   fill-opacity: 0;
   transform-origin: 50% 50%;
   animation-duration: 0.75s;
@@ -211,13 +309,29 @@ circle {
 }
 
 .ad {
-  max-width: 200px;
-  z-index: 99999;
+  max-width: 180px;
+  z-index: 3;
   cursor: pointer;
   position: relative;
   animation-duration: 1.3s;
   animation-name: ad;
   animation-iteration-count: infinite;
+}
+
+.ieError.new {
+  animation-name: error;
+  animation-duration: 2s;
+}
+
+@keyframes error {
+  0% {
+    /*left: -1000px;*/
+    transform: scale(0.1);
+  }
+  100% {
+    /*left: inherit;*/
+    transform: scale(1);
+  }
 }
 
 @keyframes ad {
@@ -244,6 +358,42 @@ circle {
   vertical-align: middle;
 }
 
-/*.ieError {*/
-  /*max-width: window;*/
-/*}*/
+.threeSecBug {
+  background: #ff313e;
+  width: 100%;
+  position: absolute;
+  right: 0px;
+  bottom: 50px;
+  height: 100px;
+  color: white;
+  z-index: 100;
+  font-family: monospace;
+  text-align: center;
+  border: 2px dashed white;
+}
+
+.threeSecBug h2 {
+  color: white;
+  margin-top: 1.5em;
+}
+
+.deployBug {
+  position: absolute;
+  bottom: 10px;
+}
+
+#catVideoClose {
+  background: #a5a5a5;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  font-size: 22px;
+  color: white;
+  -webkit-text-stroke-width: medium;
+}

@@ -19,19 +19,26 @@ class PlayAs extends Component {
     const userHasSelected = this.props.players.find(player => player.id === this.props.playingAs && !!player.connected);
     return (
       <div className="playAs">
+        <h2 className="playAsTitle">Play As:</h2>
         <div className="players row">
           {this.props.players.map((player, i) => {
             const icon = player.id === 'antagonist' ? DevilIcon : ClickIcon;
             const isSelectableClass = !player.connected && !userHasSelected ? 'selectable' : '';
-            return <div key={player.id} className="player col col-lg-6 col-md-6 col-sm-12">
-              <h3 className="playerLabel">{player.label}</h3>
-              <div className={`playerImgWrapper ${isSelectableClass}`} onClick={() => { this.props.updatePlayer(player.id, true) }}>
-                <img className={`playerImg ${isSelectableClass}`} src={icon} alt={player.id}/>
+            const playerLabel = getPlayerLabel(player, this.props.playingAs);
+            let wrapperClass = '';
+            if (!isSelectableClass) {
+              wrapperClass = playerLabel === 'Waiting on other player...' ? 'selectionComplete waiting' : 'selectionComplete connected';
+            }
+            return <div key={player.id} className={`player col col-lg-6 col-md-6 col-sm-12 ${isSelectableClass}`}>
+              <div className={`playerImgWrapper ${wrapperClass}`} onClick={() => { this.props.updatePlayer(player.id, true) }}>
+                <h3 className="playerTitle">{player.id.toUpperCase()}</h3>
+                <img className="playerImg" src={icon} alt={player.id}/>
                 { !isSelectableClass ?
-                  <span className="connectedLabel">{getPlayerLabel(player, this.props.playingAs)}</span>
+                  <span className="connectedLabel">{playerLabel}</span>
                   : null
                 }
               </div>
+              <h4 className="playerDesc">{player.label}</h4>
             </div>
           })}
         </div>

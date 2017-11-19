@@ -26,6 +26,7 @@ class AntagonistView extends Component {
     const buttonStyle = {
       left: this.props.gameState.buttonPosition.x,
       top: this.props.gameState.buttonPosition.y,
+      background: '#f94949'
     };
     const deployButtons = Object.keys(this.props.gameState).filter(key => key.includes('deploy'));
     const clickIndicatorStyle = this.props.gameState.clickAttempt
@@ -40,13 +41,19 @@ class AntagonistView extends Component {
         onDragEnd={this.moveButton}
         onTouchMove={this.moveButton}
         style={buttonStyle}
-      >Move Button!</div>
+      >Move ME!</div>
       <div className="clickIndicator" style={clickIndicatorStyle}>
         <svg height="40px" width="40px">
           <circle className="pulse" cx="50%" cy="50%" r="5px"></circle>
           <circle className="pulse" cx="50%" cy="50%" r="10px"></circle>
         </svg>
       </div>
+      {this.props.gameState.bugAntagonistScreen ?
+        <div className="threeSecBug">
+          <h2>System Bugged!</h2>
+        </div>
+        : null
+      }
       { !this.props.gameState.winner ?
         <div className="toolbar">
           { deployButtons.map(button => {

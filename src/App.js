@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {blueGrey900, deepOrange500, deepOrange900} from 'material-ui/styles/colors';
+import Delay from 'react-delay';
 import io from 'socket.io-client';
 import ClickerView from './components/ClickerView';
 import AntagonistView from './components/AntagonistView';
@@ -58,15 +59,24 @@ class App extends Component {
       },
       playingAs: '',
       players: [
-        {id: 'clicker', connected: false, label: 'Person who tries to click the button (good luck)'},
-        {id: 'antagonist', connected: false, label: 'Person who antagonizes with web magic (Muahahaha!)'}
+        {id: 'clicker', connected: false, label: 'Click the button (sounds easy, right?)'},
+        {id: 'antagonist', connected: false, label: 'Be a pain in the ass to the other player...'}
       ],
       winner: null,
       clickAttempt: null,
+      bugAntagonistScreen: null,
+      rows: [],
+      columns: [],
     };
+    socket.on('new connection', players => this.setState({ players }));
+    socket.on('new disconnection', () => this.resetGame({ resetPlayers: true, isSender: false }));
     socket.on('new gameState', payload => this.updateGameState(payload));
     socket.on('new player selected', playerId => this.updatePlayer(playerId, false));
-    socket.on('reset game', () => this.resetGame());
+    socket.on('reset game', resetPlayers => this.resetGame({ resetPlayers, isSender: false }));
+    socket.on('hide element', elementId => {
+      const target = document.getElementById(elementId);
+      target.style.display = 'none';
+    });
   }
   componentDidUpdate(prevProps, prevState) {
     const deployOptions = Object.keys(player2Options);
@@ -83,12 +93,24 @@ class App extends Component {
       socket.emit('update game option event', {key, data});
     }
   }
-  resetGame(isSender) {
-    const players = this.state.players;
-    players.forEach(player => player.connected = false);
-    this.setState({ players, winner: '', playingAs: '' });
+  resetGame({ resetPlayers, isSender }) {
+    const newState = {
+      ...player2Options,
+      buttonPosition: {
+        x: 0,
+        y: 0
+      },
+      winner: '',
+      players: this.state.players,
+      playingAs: this.state.playingAs
+    };
+    if (resetPlayers) {
+      newState.players.forEach(player => player.connected = false);
+      newState.playingAs = '';
+    }
+    this.setState(newState);
     if (isSender) {
-      socket.emit('reset game event');
+      socket.emit('reset game event', resetPlayers);
     }
   }
   updatePlayer(playerId, isSender) {
@@ -100,6 +122,10 @@ class App extends Component {
       this.setState({ playingAs: playerId });
       socket.emit('playAs event', playerId);
     }
+  }
+  hideElement(e) {
+    e.target.style.display = 'none';
+    socket.emit('hide element event', e.target.id);
   }
   render() {
     const PlayerView = this.state.playingAs === 'antagonist' ? AntagonistView : ClickerView;
@@ -128,47 +154,56 @@ class App extends Component {
             {this.state.deployCopies ?
                 rows.map(row => {
                   return columns.map(column => {
-                    if (row === 0 && column === 0 ) {
+                    if (row === 0 && column === 3 ) {
                       return null;
                     }
-                    return <div
-                      key={`${row}_${column}`}
-                      className="mainButtonCopy atTop"
-                      style={{ transform: `translate(${90 * column}px, ${40 * row}px)` }}
-                      onClick={e => e.target.remove()}
-                    >Click Me!!!</div>
+                    return <Delay wait={100 * row} key={`${row}_${column}`}>
+                      <div
+                        className="mainButtonCopy atTop"
+                        id={`mainButtonCopy_${row}_${column}`}
+                        style={{transform: `translate(${90 * column}px, ${40 * row}px)`}}
+                        onClick={this.hideElement}
+                      >Click Me!!!
+                      </div>
+                    </Delay>
                   });
                 })
               : null
             }
             <div id="catVideo"></div>
+            {this.state.deployCatVideo ?
+              <div id="catVideoClose" onClick={ () => { this.updateGameState({ key: 'deployCatVideo', data: false, isSender: true }) } }>X</div> : null
+            }
             {this.state.deployAds ?
               <div className="ads fullSize atTop">
-                <img className="ad" src={ad1} alt="ad1" onClick={(e) => e.target.style.display = 'none'}/>
-                <img className="ad" src={ad2} alt="ad2" onClick={(e) => e.target.style.display = 'none'} />
-                <img className="ad" src={ad3} alt="ad3" onClick={(e) => e.target.style.display = 'none'} />
-                <img className="ad" src={ad4} alt="ad4" onClick={(e) => e.target.style.display = 'none'} />
-                <img className="ad" src={ad5} alt="ad5" onClick={(e) => e.target.style.display = 'none'} />
-                <img className="ad" src={ad6} alt="ad6" onClick={(e) => e.target.style.display = 'none'} />
+                <img className="ad" id="ad1" src={ad1} alt="ad1" onClick={this.hideElement}/>
+                <img className="ad" id="ad2" src={ad2} alt="ad2" onClick={this.hideElement} />
+                <img className="ad" id="ad3" src={ad3} alt="ad3" onClick={this.hideElement} />
+                <img className="ad" id="ad4" src={ad4} alt="ad4" onClick={this.hideElement} />
+                <img className="ad" id="ad5" src={ad5} alt="ad5" onClick={this.hideElement} />
+                <img className="ad" id="ad6" src={ad6} alt="ad6" onClick={this.hideElement} />
               </div>
               : null
             }
             { this.state.deployBlueScreen ?
-              <div className="BSOD fullSize atTop">
-                <img src={BSOD} alt="BSOD" />
+              <div className="BSOD fullSize atTop" id="BSOD_Wrapper" onClick={this.hideElement}>
+                <img id="BSOD" src={BSOD} alt="BSOD" />
               </div>
               : null
             }
             { this.state.deployIeError ?
               rows.map(row => {
-                return <img
-                  key={row}
-                  alt="ieError"
-                  className="ieError atTop"
-                  src={ieError}
-                  onClick={e => e.target.remove()}
-                  style={{ transform: `translate(${15 * row}px, ${15 * row}px)`, maxWidth: window.innerWidth }}
-                />
+                const xAmount = row > 5 ? 10 - row : row;
+                return <Delay wait={100 * row} key={row}>
+                  <img
+                    alt="ieError"
+                    id={`ieError_${row}`}
+                    className="ieError atTop"
+                    src={ieError}
+                    onClick={this.hideElement}
+                    style={{transform: `translate(${30 * xAmount}px, ${30 * row}px)`, maxWidth: window.innerWidth}}
+                  />
+                </Delay>
               })
               : null
             }

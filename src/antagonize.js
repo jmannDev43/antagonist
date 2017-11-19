@@ -1,7 +1,7 @@
 let player;
 
 const antagonize = {
-  deployCatVideo: (start) => {
+  deployCatVideo: (start, updateGameState) => {
     if (start) {
       player = new window.YT.Player('catVideo', {
         height: window.innerHeight,
@@ -12,27 +12,30 @@ const antagonize = {
         }
       });
     } else {
-      player.destroy();
+      player && player.destroy();
     }
   },
   deployAds: (start, updateGameState) => {
-    updateGameState('deployAds', start, true);
+    updateGameState({key: 'deployAds', data: start, isSender: true });
   },
   deployBlueScreen: (start, updateGameState) => {
-    updateGameState('deployAds', start, true);
+    updateGameState({key: 'deployBlueScreen', data: start, isSender: true });
   },
   deployCopies: (start, updateGameState) => {
-    updateGameState('deployCopies', start, true);
+    updateGameState({key: 'deployCopies', data: start, isSender: true });
+    if (start) {
+      updateGameState({key: 'buttonPosition', data: { x: 270, y: 0 }, isSender: true });
+    }
   },
   deployIeError: (start, updateGameState) => {
-    updateGameState('deployIeError', start, true);
+    updateGameState({key: 'deployIeError', data: start, isSender: true });
   },
   deployShrink: (start) => {
     const mainButton = document.querySelectorAll('.mainButton')[0];
     if (start) {
-      return mainButton.style.transform = 'scale(0.2)';
+      return mainButton.classList.add('shrink');
     }
-    mainButton.style.transform = 'scale(1)';
+    return mainButton.classList.remove('shrink');
   },
 };
 
