@@ -8,6 +8,7 @@
     "gun": "^0.8.9",
     "material-ui": "^0.19.4",
     "nodemon": "^1.12.1",
+    "path": "^0.12.7",
     "react": "^16.1.1",
     "react-autobind": "^1.0.6",
     "react-delay": "^0.1.0",
@@ -17,7 +18,7 @@
     "socket.io-client": "^2.0.4"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"nodemon ./src/server.js\"",
+    "start": "concurrently \"react-scripts start\" \"node ./server/index.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

@@ -8,7 +8,7 @@ const antagonize = {
         width: window.innerWidth,
         videoId: '-a75sRCC7Bg',
         events: {
-          'onReady': event => event.target.playVideo()
+          'onReady': event => setTimeout(() => event.target.playVideo(), 2000)
         }
       });
     } else {

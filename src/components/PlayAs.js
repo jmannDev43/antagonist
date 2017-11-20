@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import DevilIcon from '../images/devil.svg'
-import ClickIcon from '../images/click.svg'
+import DevilIcon from '../images/devil.svg';
+import ClickIcon from '../images/click.svg';
 
 function getPlayerLabel(player, playingAs) {
   if (playingAs) {
@@ -30,7 +30,7 @@ class PlayAs extends Component {
               wrapperClass = playerLabel === 'Waiting on other player...' ? 'selectionComplete waiting' : 'selectionComplete connected';
             }
             return <div key={player.id} className={`player col col-lg-6 col-md-6 col-sm-12 ${isSelectableClass}`}>
-              <div className={`playerImgWrapper ${wrapperClass}`} onClick={() => { this.props.updatePlayer(player.id, true) }}>
+              <div className={`playerImgWrapper ${wrapperClass}`} onClick={() => { this.props.updatePlayer({ playerId: player.id, isSender: true, connected: true }) }}>
                 <h3 className="playerTitle">{player.id.toUpperCase()}</h3>
                 <img className="playerImg" src={icon} alt={player.id}/>
                 { !isSelectableClass ?

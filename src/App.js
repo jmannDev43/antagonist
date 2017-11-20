@@ -20,7 +20,9 @@ import ad6 from './images/ad6.jpeg';
 import BSOD from './images/bsod.gif';
 import ieError from './images/ie-error.gif';
 
-const socket = io('http://localhost:8080');
+const origin = !!process.env.REACT_APP_LOCAL ? 'http://localhost:8080' : document.location.origin;
+console.log('origin', origin);
+const socket = io(origin);
 
 const muiTheme = getMuiTheme({
   fontFamily: 'Roboto Slab, sans-serif',
@@ -69,9 +71,9 @@ class App extends Component {
       columns: [],
     };
     socket.on('new connection', players => this.setState({ players }));
-    socket.on('new disconnection', () => this.resetGame({ resetPlayers: true, isSender: false }));
+    socket.on('player disconnected', (playerId, isSender) => this.updatePlayer({ playerId, isSender, connected: false }));
     socket.on('new gameState', payload => this.updateGameState(payload));
-    socket.on('new player selected', playerId => this.updatePlayer(playerId, false));
+    socket.on('new player selected', playerId => this.updatePlayer({ playerId, isSender: false, connected: true }));
     socket.on('reset game', resetPlayers => this.resetGame({ resetPlayers, isSender: false }));
     socket.on('hide element', elementId => {
       const target = document.getElementById(elementId);
@@ -113,14 +115,16 @@ class App extends Component {
       socket.emit('reset game event', resetPlayers);
     }
   }
-  updatePlayer(playerId, isSender) {
+  updatePlayer({ playerId, isSender, connected }) {
     const players = this.state.players;
     const player = players.find(player => player.id === playerId);
-    player.connected = true;
+    player.connected = connected;
     this.setState({ players });
     if (isSender) {
-      this.setState({ playingAs: playerId });
-      socket.emit('playAs event', playerId);
+      const playingAs = connected ? playerId : '';
+      this.setState({ playingAs });
+      const emitMessage = connected ? 'player selected event' : 'player disconnected';
+      socket.emit(emitMessage, playerId);
     }
   }
   hideElement(e) {
