@@ -176,14 +176,14 @@ body {
   color: #696969;
 }
 
-@media only screen and (max-width: 730px) {
+@media only screen and (max-width: 989px) {
   .player.selectable:nth-child(2) {
     border-top: 1px solid #696969;
     margin-top: 2em;
   }
 }
 
-@media only screen and (min-width: 731px) {
+@media only screen and (min-width: 990px) {
   .player.selectable:nth-child(2) {
     border-left: 1px solid #696969;
   }
@@ -380,6 +380,7 @@ circle {
 .deployBug {
   position: absolute;
   bottom: 10px;
+  z-index: 1100;
 }
 
 #catVideoClose {
